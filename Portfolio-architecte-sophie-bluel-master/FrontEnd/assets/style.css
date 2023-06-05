@@ -185,6 +185,7 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	cursor: pointer;
 }
 
 li:hover {
@@ -244,7 +245,7 @@ li:hover {
 
 }
 
-.filters-buttons {
+.filters button {
 	min-width: 100px;
 	box-sizing: border-box;
 	height: 37px;
@@ -259,7 +260,7 @@ li:hover {
 	padding-left: 10px;
 }
 
-.filters-buttons:hover {
+.filters button:hover {
 	background-color: #1D6154;
 	color: white;
 }
@@ -310,6 +311,7 @@ input[type="submit"] {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+	cursor: pointer;
 }
 
 footer nav ul {
