@@ -109,6 +109,7 @@ section {
 
 body {
 	line-height: 1;
+	background-color: #FFFEF8;
 }
 
 ol,
@@ -190,6 +191,10 @@ nav li {
 
 li:hover {
 	color: #B1663C;
+}
+
+a {
+	text-decoration: none;
 }
 
 #introduction {
@@ -318,4 +323,59 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
+}
+
+.login {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 200px;
+	margin-bottom: 50%;
+}
+
+.login form {
+	display: flex;
+	flex-direction: column;
+}
+
+.login label {
+	margin-bottom: 7px;
+	margin-top: 30px;
+}
+
+.login input {
+	width: 379px;
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.login h2 {
+	margin-bottom: 30px;
+}
+
+.login p {
+	text-decoration-line: underline;
+	cursor: pointer;
+	text-align: center;
+}
+
+.legal-notice {
+	height: 60px;
+	background-color: white;
+}
+
+.legal-notice li {
+	padding-top: 20px;
+}
+
+#connexion {
+	width: 179px;
+	height: 36px;
+	margin-top: 47px;
+	margin-bottom: 37px;
+}
+
+.connexion-header {
+	margin-left: 50px;
 }
