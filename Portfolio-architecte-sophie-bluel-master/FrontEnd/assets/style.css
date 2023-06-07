@@ -348,6 +348,7 @@ footer nav ul {
 	height: 51px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	padding-left: 10px;
 }
 
 .login h2 {
@@ -378,4 +379,10 @@ footer nav ul {
 
 .connexion-header {
 	margin-left: 50px;
+}
+
+#error-container {
+	margin-bottom: 15px;
+	margin-top: -15px;
+	text-align: center;
 }
