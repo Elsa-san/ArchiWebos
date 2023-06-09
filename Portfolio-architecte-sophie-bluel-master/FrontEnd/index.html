@@ -14,18 +14,25 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Syne:wght@700&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/1b67ca9c39.js" crossorigin="anonymous"></script>
 	<script src="script.js" defer></script>
+	<script src="login.js" defer></script>
+
 
 </head>
 
 <body>
+	<div id="edition-block" class="hidden">
+		<button class="edition-button"><i class="fa-regular fa-pen-to-square"></i>Mode édition</button>
+		<input class="edition-input" value="Publier les changements">
+	</div>
 	<header>
-		<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
 			<ul>
 				<li>projets</li>
 				<li>contact</li>
-				<li><a href="login.html">login</a></li>
+				<li><a href="login.html" id="login-text">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -33,7 +40,9 @@
 	<main>
 		<section id="introduction">
 			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
+				<img src="./assets/images/sophie-bluel.png" alt="photo de l'architecte">
+				<figcaption class="figcaption hidden"><i class="fa-regular fa-pen-to-square hidden"></i>modifier
+				</figcaption>
 			</figure>
 			<article>
 				<h2>Designer d'espace</h2>
@@ -47,7 +56,11 @@
 			</article>
 		</section>
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
+			<div class="projects">
+				<h2>Mes Projets</h2>
+				<i class="fa-regular fa-pen-to-square hidden"></i>
+				<p class="hidden">modifier</p>
+			</div>
 			<div class="filters">
 				<button id="filters-all">Tous</button>
 				<button id="filters-objects">Objets</button>
