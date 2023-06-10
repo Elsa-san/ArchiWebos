@@ -458,3 +458,56 @@ figcaption {
 	margin-top: 10px;
 	cursor: pointer;
 }
+
+#modal {
+	width: 630px;
+	height: 631px;
+	background: white;
+	border-radius: 10px;
+	top: 0;
+	left: 0;
+	border: none;
+}
+
+#modal h3 {
+	font-size: 26px;
+	text-align: center;
+	margin-top: 60px;
+}
+
+.close-modal {
+	border: none;
+	background-color: transparent;
+	float: right;
+	margin-top: 25px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.add-button {
+	border: none;
+	border-radius: 60px;
+	height: 36px;
+	width: 237px;
+	text-align: center;
+	margin-top: 40px;
+	color: white;
+	background-color: #1D6154;
+	cursor: pointer;
+	margin-left: 200px;
+}
+
+hr {
+	border: none;
+	width: 420px;
+	border: 1px solid;
+	color: #B3B3B3;
+	margin-top: 30px;
+}
+
+.delete {
+	color: red;
+	margin-top: 23px;
+	text-align: center;
+	cursor: pointer;
+}
