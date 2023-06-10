@@ -23,7 +23,7 @@
 
 <body>
 	<div id="edition-block" class="hidden">
-		<button class="edition-button"><i class="fa-regular fa-pen-to-square"></i>Mode édition</button>
+		<button class="edition-button show-modal"><i class="fa-regular fa-pen-to-square"></i>Mode édition</button>
 		<input class="edition-input" value="Publier les changements">
 	</div>
 	<header>
@@ -41,7 +41,8 @@
 		<section id="introduction">
 			<figure>
 				<img src="./assets/images/sophie-bluel.png" alt="photo de l'architecte">
-				<figcaption class="figcaption hidden"><i class="fa-regular fa-pen-to-square hidden"></i>modifier
+				<figcaption class="figcaption hidden show-modal"><i
+						class="fa-regular fa-pen-to-square hidden"></i>modifier
 				</figcaption>
 			</figure>
 			<article>
@@ -58,8 +59,8 @@
 		<section id="portfolio">
 			<div class="projects">
 				<h2>Mes Projets</h2>
-				<i class="fa-regular fa-pen-to-square hidden"></i>
-				<p class="hidden">modifier</p>
+				<i class="fa-regular fa-pen-to-square hidden show-modal"></i>
+				<p class="hidden show-modal">modifier</p>
 			</div>
 			<div class="filters">
 				<button id="filters-all">Tous</button>
@@ -87,6 +88,13 @@
 				<input type="submit" value="Envoyer">
 			</form>
 		</section>
+		<dialog id="modal">
+			<button class="close-modal"><i class="fa-solid fa-xmark fa-xl"></i></button>
+			<h3>Galerie photo</h3>
+			<hr>
+			<input class="add-button" value="Ajouter une photo">
+			<p class="delete">Supprimer la galerie</p>
+		</dialog>
 	</main>
 
 	<footer>

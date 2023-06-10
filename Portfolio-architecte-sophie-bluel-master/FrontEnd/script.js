@@ -103,4 +103,31 @@ if (userAuthenticated) {
 
 }
 
+const modal = document.getElementById('modal')
+const showModal = document.querySelectorAll('.show-modal')
+const openModal = () => {
+    modal.showModal()
+}
+
+showModal.forEach((button) => {
+    button.addEventListener('click', openModal);
+})
+
+const closeModalCross = document.querySelector(".close-modal")
+
+//to close the modal
+const closeModal = () => {
+    modal.close()
+}
+//close outside of the modal
+closeModalCross.addEventListener('click', closeModal)
+modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        closeModal()
+    }
+})
+
+
+
+
 
