@@ -1,3 +1,4 @@
+
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(works => {
@@ -126,6 +127,33 @@ modal.addEventListener('click', (event) => {
         closeModal()
     }
 })
+
+
+fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then(works => {
+        const galleryModal = document.querySelector('.gallery-modal')
+        works.forEach(work => {
+            const figure = document.createElement('figure')
+            const image = document.createElement('img')
+            image.src = work.imageUrl
+            image.style.width = '78px'
+            image.style.height = '104px'
+            const figcaption = document.createElement('figcaption')
+            figcaption.innerHTML = 'éditer'
+            const deleteSpan = document.createElement('span');
+            deleteSpan.classList.add('delete-icon');
+            const deleteIcon = document.createElement('i')
+            deleteIcon.classList.add('fa-solid', 'fa-trash-can')
+            deleteSpan.appendChild(deleteIcon)
+            figure.appendChild(image)
+            figure.appendChild(figcaption)
+            figure.appendChild(deleteSpan)
+            galleryModal.appendChild(figure)
+
+        });
+    });
+
 
 
 
