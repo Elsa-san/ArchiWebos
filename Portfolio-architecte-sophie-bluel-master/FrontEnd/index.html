@@ -95,8 +95,30 @@
 				<!-- dynamically generated (js) -->
 			</div>
 			<hr>
-			<input class="add-button" value="Ajouter une photo">
+			<input id="addWorkButton" class="add-button" value="Ajouter une photo">
 			<p class="delete">Supprimer la galerie</p>
+		</dialog>
+		<dialog id="modal" class="workModal">
+			<button id="backToGalleryButton" class="back-button"><i class="fa-solid fa-arrow-left fa-xl"></i></button>
+			<button class="close-modal"><i class="fa-solid fa-xmark fa-xl"></i></button>
+			<h3>Ajout photo</h3>
+			<form>
+				<div class="rectangle">
+					<i class="fa-regular fa-image fa-2xl"></i>
+					<input type="text" class="add-work-button" value="+ Ajouter photo">
+					<p>jpg, png : 4mo max</p>
+				</div>
+				<div class="form-fields">
+					<label for="workTitle">Titre</label>
+					<input type="text" id="workTitle" class="modal-input" required>
+					<label for="workCategory">Catégorie</label>
+					<select id="workCategory" class="modal-input" required>
+						<!-- dynamically generated (js) -->
+					</select>
+				</div>
+				<hr>
+				<button type="submit" class="submit-button">Valider</button>
+			</form>
 		</dialog>
 	</main>
 

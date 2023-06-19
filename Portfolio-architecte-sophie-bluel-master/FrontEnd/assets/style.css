@@ -548,3 +548,79 @@ hr {
 	padding: 5px;
 	margin-right: 5px;
 }
+
+.back-button {
+	background-color: transparent;
+	border-style: none;
+	margin-top: 25px;
+	margin-left: 15px;
+}
+
+.submit-button {
+	width: 237px;
+	height: 36px;
+	border-radius: 60px;
+	background-color: #A7A7A7;
+	color: white;
+	border-style: none;
+	margin-top: 30px;
+	cursor: pointer;
+	font-family: 'syne';
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.rectangle {
+	width: 420px;
+	height: 169px;
+	background-color: #E8F1F6;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+
+.add-work-button {
+	background-color: #CBD6DC;
+	color: #306685;
+	width: 173px;
+	height: 36px;
+	border-radius: 50px;
+	border-style: none;
+	text-align: center;
+	margin-top: 30px;
+	cursor: pointer;
+}
+
+form p {
+	size: 10px;
+	margin-top: 7px;
+}
+
+.modal-input {
+	background-color: #FFFFFF;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border-style: none;
+	width: 420px;
+	height: 51px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+form i {
+	color: #B9C5CC;
+}
+
+.form-fields {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}

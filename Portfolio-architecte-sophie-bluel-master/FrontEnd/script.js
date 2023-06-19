@@ -114,13 +114,15 @@ showModal.forEach((button) => {
     button.addEventListener('click', openModal);
 })
 
+//to close the modal
+
 const closeModalCross = document.querySelector(".close-modal")
 
-//to close the modal
 const closeModal = () => {
     modal.close()
 }
-//close outside of the modal
+//to close outside of the modal
+
 closeModalCross.addEventListener('click', closeModal)
 modal.addEventListener('click', (event) => {
     if (event.target === modal) {
@@ -128,6 +130,7 @@ modal.addEventListener('click', (event) => {
     }
 })
 
+//data recovery of the modal + icons to delete
 
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
@@ -137,8 +140,6 @@ fetch('http://localhost:5678/api/works')
             const figure = document.createElement('figure')
             const image = document.createElement('img')
             image.src = work.imageUrl
-            image.style.width = '78px'
-            image.style.height = '104px'
             const figcaption = document.createElement('figcaption')
             figcaption.innerHTML = 'éditer'
             const deleteSpan = document.createElement('span');
@@ -150,12 +151,62 @@ fetch('http://localhost:5678/api/works')
             figure.appendChild(figcaption)
             figure.appendChild(deleteSpan)
             galleryModal.appendChild(figure)
-
+            deleteIcon.addEventListener('click', () => {
+                deleteWork(work.id)
+            })
         });
     });
 
 
+//to delete a work in the modal 
 
+function deleteWork(id) {
+    const accessToken = localStorage.getItem('token')
 
+    fetch(`http://localhost:5678/api/works/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${accessToken}`
 
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('work deleted')
+                removeWorkOnModal(id) //to delete work from the modal
+                removeWorkOnGallery(id) //to delete work on the gallery
+
+            }
+            else {
+                console.error('deletion failed')
+            }
+        })
+        .catch(error => {
+            console.error('une erreur est survenue', error)
+        })
+}
+
+function removeWorkOnModal(workId) {
+    const figure = document.querySelector(`.gallery-modal figure[data-work-id="${workId}"]`)
+    if (figure) {
+        figure.remove()
+    }
+}
+
+function removeWorkOnGallery(workId) {
+    const figure = document.querySelector(`.gallery figure[data-work-id="${workId}"]`)
+    if (figure) {
+        figure.remove()
+    }
+}
+
+// Add a new work
+
+const addWorkButton = document.getElementById('addWorkButton')
+addWorkButton.addEventListener('click', openWorkModal)
+
+function openWorkModal() {
+    const modal = document.getElementsByClassName('workModal')[0]
+    modal.showModal()
+}
 
