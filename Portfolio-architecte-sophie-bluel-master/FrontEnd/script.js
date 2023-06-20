@@ -22,8 +22,9 @@ function updateGallery(works) {
     works.forEach(work => {
         const figure = document.createElement('figure')
         const image = document.createElement('img');
+        const figcaption = document.createElement('figcaption')
         image.src = work.imageUrl;
-        const figcaption = document.createElement('figcaption');
+        figcaption.textContent = work.title
         gallery.appendChild(figure)
         figure.appendChild(image)
         figure.appendChild(figcaption)
