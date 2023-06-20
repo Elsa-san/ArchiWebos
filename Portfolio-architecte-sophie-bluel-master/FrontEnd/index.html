@@ -88,7 +88,7 @@
 				<input type="submit" value="Envoyer">
 			</form>
 		</section>
-		<dialog id="modal">
+		<dialog id="modal" class="modal">
 			<button class="close-modal"><i class="fa-solid fa-xmark fa-xl"></i></button>
 			<h3>Galerie photo</h3>
 			<div class="gallery-modal">
@@ -98,14 +98,15 @@
 			<input id="addWorkButton" class="add-button" value="Ajouter une photo">
 			<p class="delete">Supprimer la galerie</p>
 		</dialog>
-		<dialog id="modal" class="workModal">
+		<dialog id="workModal" class="modal workModal">
 			<button id="backToGalleryButton" class="back-button"><i class="fa-solid fa-arrow-left fa-xl"></i></button>
-			<button class="close-modal"><i class="fa-solid fa-xmark fa-xl"></i></button>
+			<button class="close-modal close-work-modal"><i class="fa-solid fa-xmark fa-xl"></i></button>
 			<h3>Ajout photo</h3>
-			<form>
+			<form class="form">
 				<div class="rectangle">
 					<i class="fa-regular fa-image fa-2xl"></i>
-					<input type="text" class="add-work-button" value="+ Ajouter photo">
+					<input type="text" id="uploadButton" class="add-work-button" value="+ Ajouter photo">
+					<div id="photo-preview"></div>
 					<p>jpg, png : 4mo max</p>
 				</div>
 				<div class="form-fields">

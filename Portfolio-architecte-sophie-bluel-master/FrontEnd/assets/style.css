@@ -459,7 +459,7 @@ figcaption {
 	cursor: pointer;
 }
 
-#modal {
+.modal {
 	width: 630px;
 	height: 731px;
 	background: white;
@@ -469,7 +469,7 @@ figcaption {
 	border: none;
 }
 
-#modal h3 {
+.modal h3 {
 	font-size: 26px;
 	text-align: center;
 	margin-top: 60px;
@@ -568,7 +568,7 @@ hr {
 	font-family: 'syne';
 }
 
-form {
+.form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -613,6 +613,9 @@ form p {
 	height: 51px;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	padding-left: 5px;
+	font-size: 14px;
+	color: #444444;
 }
 
 form i {

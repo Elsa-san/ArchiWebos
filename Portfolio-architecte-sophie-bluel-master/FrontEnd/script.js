@@ -105,7 +105,12 @@ if (userAuthenticated) {
 }
 
 const modal = document.getElementById('modal')
+const workModal = document.getElementById('workModal');
 const showModal = document.querySelectorAll('.show-modal')
+const closeModalCross = document.querySelector(".close-modal")
+const closeModalOutside = document.querySelectorAll('.modal');
+
+
 const openModal = () => {
     modal.showModal()
 }
@@ -115,11 +120,16 @@ showModal.forEach((button) => {
 })
 
 //to close the modal
+closeModalCross.addEventListener('click', closeModal)
+modal.addEventListener('click', (event) => {
+    if (event.target === modal || event.target === workModal) {
+        closeModal();
+    }
+});
 
-const closeModalCross = document.querySelector(".close-modal")
-
-const closeModal = () => {
-    modal.close()
+function closeModal() {
+    modal.close();
+    workModal.close();
 }
 //to close outside of the modal
 
@@ -202,11 +212,45 @@ function removeWorkOnGallery(workId) {
 
 // Add a new work
 
-const addWorkButton = document.getElementById('addWorkButton')
-addWorkButton.addEventListener('click', openWorkModal)
+const addWorkButton = document.getElementById('addWorkButton');
+addWorkButton.addEventListener('click', openWorkModal);
 
 function openWorkModal() {
-    const modal = document.getElementsByClassName('workModal')[0]
-    modal.showModal()
+    const modal = document.querySelector('.workModal');
+    if (modal) {
+        modal.showModal();
+    }
 }
+
+// to fetch the categories by API
+
+const categorySelectModal = document.getElementById('workCategory')
+
+function fetchCategoriesModal() {
+    const apiURL = 'http://localhost:5678/api/categories'
+
+    fetch(apiURL)
+        .then(response => response.json())
+        .then(categoriesData => {
+            addCategoriesToSelect(categoriesData)
+        })
+        .catch(error => {
+            console.log('une erreur est survenue', error)
+        })
+}
+
+// To add the categories to the dropdown list
+
+function addCategoriesToSelect(categories) {
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelectModal.appendChild(option);
+    });
+}
+
+fetchCategoriesModal()
+
+//to add a photo
 
