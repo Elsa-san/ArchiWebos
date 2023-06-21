@@ -110,6 +110,8 @@ const workModal = document.getElementById('workModal');
 const showModal = document.querySelectorAll('.show-modal')
 const closeModalCross = document.querySelector(".close-modal")
 const closeModalOutside = document.querySelectorAll('.modal');
+const closeModalCrossWorkModal = document.querySelector(".close-work-modal");
+
 
 
 const openModal = () => {
@@ -120,10 +122,25 @@ showModal.forEach((button) => {
     button.addEventListener('click', openModal);
 })
 
-//to close the modal
+//to close the modal 
+
 closeModalCross.addEventListener('click', closeModal)
 modal.addEventListener('click', (event) => {
     if (event.target === modal || event.target === workModal) {
+        closeModal();
+    }
+});
+
+closeModalCross.addEventListener('click', closeModal);
+workModal.addEventListener('click', (event) => {
+    if (event.target === workModal) {
+        closeModal();
+    }
+});
+
+closeModalCrossWorkModal.addEventListener('click', closeModal);
+workModal.addEventListener('click', (event) => {
+    if (event.target === workModal) {
         closeModal();
     }
 });
@@ -132,14 +149,7 @@ function closeModal() {
     modal.close();
     workModal.close();
 }
-//to close outside of the modal
 
-closeModalCross.addEventListener('click', closeModal)
-modal.addEventListener('click', (event) => {
-    if (event.target === modal) {
-        closeModal()
-    }
-})
 
 //data recovery of the modal + icons to delete
 
@@ -253,5 +263,44 @@ function addCategoriesToSelect(categories) {
 
 fetchCategoriesModal()
 
-//to add a photo
+//to add a photo on the modal
+
+function triggerFileSelect() { // create dynamically the input element type 'file'
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/jpeg, image/png';
+
+    fileInput.addEventListener('change', (event) => {
+        const photo = event.target.files[0]; // recovery of the photo selected
+        const photoPreview = document.getElementById('photo-preview');
+
+        if (photo) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', () => {
+                const previewImage = document.createElement('img');
+                previewImage.src = reader.result; // define the URL as a source
+                photoPreview.innerHTML = ''; // reace 
+                photoPreview.appendChild(previewImage);
+
+            });
+
+            reader.readAsDataURL(photo); // read the file as data URL
+
+        }
+
+
+        //hide the other elements
+
+        const elementsHidden = document.querySelectorAll('p, i')
+        elementsHidden.forEach((element) => {
+            element.style.display = 'none'
+        })
+        uploadButton.style.display = 'none'
+    });
+
+    fileInput.click();
+}
+
+uploadButton.addEventListener('click', triggerFileSelect);
 

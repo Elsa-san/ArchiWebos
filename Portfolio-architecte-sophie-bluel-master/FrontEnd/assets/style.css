@@ -589,6 +589,7 @@ hr {
 }
 
 .add-work-button {
+	display: inline-block;
 	background-color: #CBD6DC;
 	color: #306685;
 	width: 173px;
