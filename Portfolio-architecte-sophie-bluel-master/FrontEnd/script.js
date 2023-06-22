@@ -269,6 +269,7 @@ fetchCategoriesModal()
 const uploadButton = document.getElementById('uploadButton')
 const uploadButtonLabel = document.getElementById('uploadButtonLabel')
 const photoPreview = document.getElementById('photo-preview')
+let selectedImage = null
 
 function triggerFileSelect() {
     const fileInput = document.getElementById('uploadButton')
@@ -279,6 +280,7 @@ function triggerFileSelect() {
         const photo = event.target.files[0]
 
         if (photo) {
+            selectedImage = photo
             const reader = new FileReader();
 
             reader.addEventListener('load', () => {
@@ -298,7 +300,7 @@ function triggerFileSelect() {
                     previewImage.width = width;
                     previewImage.height = height;
 
-                    //erase previw content + add the new image
+                    //erase preview content + add the new image
                     photoPreview.innerHTML = ''
                     photoPreview.appendChild(previewImage)
                 }
@@ -312,7 +314,6 @@ function triggerFileSelect() {
 
 
             // Hide the other elements on modal
-
             const elementsHidden = document.querySelectorAll('.modal p, .modal i.fa-image');
             elementsHidden.forEach((element) => {
                 element.style.display = 'none';
@@ -357,25 +358,26 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 // send the new work to the gallery 
+const submitButtonModal = document.getElementById('submitButtonModal')
 
-function submitNewWork(event) {
+//send a new project to the back-end by the modal form
+function createWork() {
+    const titleInput = document.getElementById('workTitle')
+    const categoryInput = document.getElementById('workCategory')
 
-    event.preventDefault()
-    const title = document.getElementById('workTitle').value
-    const category = document.getElementById('workCategory').value
+    const photo = selectedImage //photo recovery
+    const title = titleInput.value.trim() //title recovery
+    const categoryId = categoryInput.value.trim()//category id recovery
 
-    if (!photoPreview.firstChild) {
-        alert('veuillez sélectionner une image')
-        return
-    }
 
-    const image = photoPreview.firstChild
-    const formData = new FormData()
-    formData.append('title', title)
-    formData.append('categoryId', category)
-    formData.append('image', image.src)
+    const formData = new FormData() // create a formdata to send data
+    formData.append('photo', photo) //photo added to formdata
+    formData.append('title', title) //title added to formdata
+    formData.append('categoryId', categoryId) //category added to formdata
+
     const accessToken = localStorage.getItem('token')
 
+    //send the request POST
     fetch('http://localhost:5678/api/works', {
         method: 'POST',
         headers: {
@@ -384,24 +386,37 @@ function submitNewWork(event) {
         body: formData
     })
         .then(response => response.json())
-        .then(data => {
-            console.log('image ajoutée', data)
-            const gallery = document.getElementById('galleryContainer')
-            const figure = document.createElement('figure')
-            const img = document.createElement('img')
-            const figcaption = document.createElement('figcaption')
-            img.src = data.imageUrl
-            figcaption.textContent = data.title
-            figure.appendChild(img)
-            figure.appendChild(figcaption)
-            gallery.appendChild(figure)
+        .then(newWork => {
+            console.log(newWork)
+            addWorkToGallery(newWork) //add the new project to the gallery
+
         })
         .catch(error => {
-            console.error('une erreur est survenue', error)
-            const form = document.querySelector('.form');
-            form.addEventListener('submit', submitNewWork);
+            console.error('Une erreur est survenue', error)
         })
 }
 
-const form = document.querySelector('form')
-form.addEventListener('submit', submitNewWork)
+submitButtonModal.addEventListener('click', createWork)
+
+// answer of the API to show dynamically the new image on the gallery
+function addWorkToGallery(work) {
+    const gallery = document.getElementById('galleryContainer')
+    const figure = document.createElement('figure')
+    const image = document.createElement('img')
+    const figcaption = document.createElement('figcaption')
+
+    image.addEventListener('load', () => {
+        figure.appendChild(image)
+        figure.appendChild(figcaption)
+        gallery.appendChild(figure)
+    })
+
+    image.src = work.imageUrl
+    figcaption.textContent = work.title
+
+    image.addEventListener('error', () => {
+        console.error('loading image error')
+    })
+
+
+}
