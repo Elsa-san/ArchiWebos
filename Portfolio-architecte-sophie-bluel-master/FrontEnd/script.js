@@ -256,6 +256,10 @@ fetchCategoriesModal()
 
 //preview of the image on the modal
 
+const uploadButton = document.getElementById('uploadButton')
+const uploadButtonLabel = document.getElementById('uploadButtonLabel')
+const photoPreview = document.getElementById('photo-preview')
+
 function triggerFileSelect() {
     const fileInput = document.getElementById('uploadButton')
     fileInput.type = 'file'
@@ -263,17 +267,30 @@ function triggerFileSelect() {
 
     fileInput.addEventListener('change', (event) => {
         const photo = event.target.files[0]
-        const photoPreview = document.getElementById('photo-preview');
 
         if (photo) {
             const reader = new FileReader();
 
             reader.addEventListener('load', () => {
-                const previewImage = document.createElement('img')
+                const previewImage = new Image()
+
+                previewImage.onload = () => {
+                    const maxHeight = 169 // Photo max height
+
+                    console.log(previewImage.height)
+                    const scaleFactor = maxHeight / previewImage.height;
+                    const width = previewImage.width * scaleFactor;
+                    const height = previewImage.height * scaleFactor;
+                    previewImage.width = width;
+                    previewImage.height = height;
+
+                    photoPreview.innerHTML = ''
+                    photoPreview.appendChild(previewImage)
+                }
+
                 previewImage.src = reader.result
-                photoPreview.innerHTML = ''
-                photoPreview.appendChild(previewImage)
             })
+
             reader.readAsDataURL(photo)
             uploadButton.style.display = 'none';
 
@@ -292,9 +309,7 @@ function triggerFileSelect() {
     fileInput.click()
 }
 
-const uploadButton = document.getElementById('uploadButton')
-uploadButton.addEventListener('click', triggerFileSelect)
+uploadButton.addEventListener('click', triggerFileSelect);
 
 
 // send work
-
