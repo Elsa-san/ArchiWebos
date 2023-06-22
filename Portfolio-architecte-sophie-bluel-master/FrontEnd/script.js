@@ -6,9 +6,9 @@ fetch('http://localhost:5678/api/works')
         works.forEach(work => {
             const gallery = document.getElementsByClassName('gallery')[0]
             const figure = document.createElement('figure')
-            const image = document.createElement('img');
+            const image = document.createElement('img')
             image.src = work.imageUrl;
-            const figcaption = document.createElement('figcaption');
+            const figcaption = document.createElement('figcaption')
             gallery.appendChild(figure)
             figure.appendChild(image)
             figure.appendChild(figcaption)
@@ -19,9 +19,10 @@ fetch('http://localhost:5678/api/works')
 function updateGallery(works) {
     const gallery = document.getElementsByClassName('gallery')[0]
     gallery.innerHTML = ""   // remove the gallery content
+
     works.forEach(work => {
         const figure = document.createElement('figure')
-        const image = document.createElement('img');
+        const image = document.createElement('img')
         const figcaption = document.createElement('figcaption')
         image.src = work.imageUrl;
         figcaption.textContent = work.title
@@ -108,37 +109,28 @@ if (userAuthenticated) {
 const modal = document.getElementById('modal')
 const workModal = document.getElementById('workModal');
 const showModal = document.querySelectorAll('.show-modal')
-const closeModalCross = document.querySelector(".close-modal")
-const closeModalOutside = document.querySelectorAll('.modal');
-const closeModalCrossWorkModal = document.querySelector(".close-work-modal");
-
-
 
 const openModal = () => {
     modal.showModal()
 }
 
 showModal.forEach((button) => {
-    button.addEventListener('click', openModal);
+    button.addEventListener('click', openModal)
 })
 
 //to close the modal 
 
-closeModalCross.addEventListener('click', closeModal)
+const closeModalCross = document.querySelector(".close-modal")
+const closeModalOutside = document.querySelectorAll('.modal');
+const closeModalCrossWorkModal = document.querySelector(".close-work-modal");
+
+closeModalCross.addEventListener('click', closeModal);
 modal.addEventListener('click', (event) => {
     if (event.target === modal || event.target === workModal) {
         closeModal();
     }
 });
 
-closeModalCross.addEventListener('click', closeModal);
-workModal.addEventListener('click', (event) => {
-    if (event.target === workModal) {
-        closeModal();
-    }
-});
-
-closeModalCrossWorkModal.addEventListener('click', closeModal);
 workModal.addEventListener('click', (event) => {
     if (event.target === workModal) {
         closeModal();
@@ -149,7 +141,6 @@ function closeModal() {
     modal.close();
     workModal.close();
 }
-
 
 //data recovery of the modal + icons to delete
 
@@ -263,44 +254,47 @@ function addCategoriesToSelect(categories) {
 
 fetchCategoriesModal()
 
-//to add a photo on the modal
+//preview of the image on the modal
 
-function triggerFileSelect() { // create dynamically the input element type 'file'
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/jpeg, image/png';
+function triggerFileSelect() {
+    const fileInput = document.getElementById('uploadButton')
+    fileInput.type = 'file'
+    fileInput.accept = 'image/jpeg, image/png'
 
     fileInput.addEventListener('change', (event) => {
-        const photo = event.target.files[0]; // recovery of the photo selected
+        const photo = event.target.files[0]
         const photoPreview = document.getElementById('photo-preview');
 
         if (photo) {
             const reader = new FileReader();
 
             reader.addEventListener('load', () => {
-                const previewImage = document.createElement('img');
-                previewImage.src = reader.result; // define the URL as a source
-                photoPreview.innerHTML = ''; // reace 
-                photoPreview.appendChild(previewImage);
+                const previewImage = document.createElement('img')
+                previewImage.src = reader.result
+                photoPreview.innerHTML = ''
+                photoPreview.appendChild(previewImage)
+            })
+            reader.readAsDataURL(photo)
+            uploadButton.style.display = 'none';
 
+
+            // Hide the other elements
+
+            const elementsHidden = document.querySelectorAll('.modal p, .modal i');
+            elementsHidden.forEach((element) => {
+                element.style.display = 'none';
             });
-
-            reader.readAsDataURL(photo); // read the file as data URL
+            uploadButtonLabel.style.display = 'none';
 
         }
-
-
-        //hide the other elements
-
-        const elementsHidden = document.querySelectorAll('p, i')
-        elementsHidden.forEach((element) => {
-            element.style.display = 'none'
-        })
-        uploadButton.style.display = 'none'
     });
 
-    fileInput.click();
+    fileInput.click()
 }
 
-uploadButton.addEventListener('click', triggerFileSelect);
+const uploadButton = document.getElementById('uploadButton')
+uploadButton.addEventListener('click', triggerFileSelect)
+
+
+// send work
 

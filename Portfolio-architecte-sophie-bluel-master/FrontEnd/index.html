@@ -105,7 +105,8 @@
 			<form class="form">
 				<div class="rectangle">
 					<i class="fa-regular fa-image fa-2xl"></i>
-					<input type="text" id="uploadButton" class="add-work-button" value="+ Ajouter photo">
+					<label for="uploadButton" class="add-work-button" id="uploadButtonLabel">+ Ajouter photo</label>
+					<input type="file" id="uploadButton" style="display: none;">
 					<div id="photo-preview"></div>
 					<p>jpg, png : 4mo max</p>
 				</div>
@@ -118,7 +119,7 @@
 					</select>
 				</div>
 				<hr>
-				<button type="submit" class="submit-button">Valider</button>
+				<button type="submit" class="submit-button" id="submitButtonModal">Valider</button>
 			</form>
 		</dialog>
 	</main>

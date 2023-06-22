@@ -568,6 +568,10 @@ hr {
 	font-family: 'syne';
 }
 
+.submit-button-green {
+	background-color: #1D6154;
+}
+
 .form {
 	display: flex;
 	flex-direction: column;
@@ -599,6 +603,7 @@ hr {
 	text-align: center;
 	margin-top: 30px;
 	cursor: pointer;
+	line-height: 36px;
 }
 
 form p {
