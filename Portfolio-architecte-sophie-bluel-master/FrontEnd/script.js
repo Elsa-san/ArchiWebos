@@ -123,6 +123,8 @@ showModal.forEach((button) => {
 const closeModalCross = document.querySelector(".close-modal")
 const closeModalOutside = document.querySelectorAll('.modal');
 const closeModalCrossWorkModal = document.querySelector(".close-work-modal");
+const backToModalButton = document.getElementById('backToModalButton')
+
 
 closeModalCross.addEventListener('click', closeModal);
 modal.addEventListener('click', (event) => {
@@ -141,6 +143,14 @@ function closeModal() {
     modal.close();
     workModal.close();
 }
+
+closeModalCrossWorkModal.addEventListener('click', closeModal)
+
+
+//back on left arrow
+backToModalButton.addEventListener('click', function () {
+    workModal.close()
+})
 
 //data recovery of the modal + icons to delete
 
@@ -303,7 +313,7 @@ function triggerFileSelect() {
 
             // Hide the other elements on modal
 
-            const elementsHidden = document.querySelectorAll('.modal p, .modal i');
+            const elementsHidden = document.querySelectorAll('.modal p, .modal i.fa-image');
             elementsHidden.forEach((element) => {
                 element.style.display = 'none';
             });
