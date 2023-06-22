@@ -278,24 +278,30 @@ function triggerFileSelect() {
                     const maxHeight = 169 // Photo max height
 
                     console.log(previewImage.height)
+
+                    //calcul to resize the image
                     const scaleFactor = maxHeight / previewImage.height;
                     const width = previewImage.width * scaleFactor;
                     const height = previewImage.height * scaleFactor;
+
+                    //apply the new dimensions to the image
                     previewImage.width = width;
                     previewImage.height = height;
 
+                    //erase previw content + add the new image
                     photoPreview.innerHTML = ''
                     photoPreview.appendChild(previewImage)
                 }
-
+                //define the src of image
                 previewImage.src = reader.result
             })
 
+            //read the image as data URL
             reader.readAsDataURL(photo)
             uploadButton.style.display = 'none';
 
 
-            // Hide the other elements
+            // Hide the other elements on modal
 
             const elementsHidden = document.querySelectorAll('.modal p, .modal i');
             elementsHidden.forEach((element) => {
@@ -306,10 +312,86 @@ function triggerFileSelect() {
         }
     });
 
+    //triger the click on the button of file selection
     fileInput.click()
 }
 
-uploadButton.addEventListener('click', triggerFileSelect);
+uploadButton.addEventListener('click', triggerFileSelect)
 
+//conditions check to submit
 
-// send work
+document.addEventListener('DOMContentLoaded', function () {
+    const photoInput = document.getElementById('uploadButton')
+    const titleInput = document.getElementById('workTitle')
+    const categoryInput = document.getElementById('workCategory')
+    const submitButtonModal = document.getElementById('submitButtonModal')
+
+    function checkFields() {
+        const photoValue = photoInput.value.trim()
+        const titleValue = titleInput.value.trim()
+        const categoryValue = categoryInput.value.trim()
+
+        if (photoValue !== '' && titleValue !== '' && categoryValue !== "") {
+            submitButtonModal.classList.add('submit-button-active')
+            submitButtonModal.removeAttribute('disabled') //submit button enable to click
+        } else {
+            submitButtonModal.classList.remove('submit-button-active')
+            submitButtonModal.setAttribute('disabled', 'disabled') // submit button disabled
+        }
+    }
+
+    photoInput.addEventListener('input', checkFields)
+    titleInput.addEventListener('input', checkFields)
+    categoryInput.addEventListener('change', checkFields)
+
+})
+
+// send the new work to the gallery 
+
+function submitNewWork(event) {
+
+    event.preventDefault()
+    const title = document.getElementById('workTitle').value
+    const category = document.getElementById('workCategory').value
+
+    if (!photoPreview.firstChild) {
+        alert('veuillez sélectionner une image')
+        return
+    }
+
+    const image = photoPreview.firstChild
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('categoryId', category)
+    formData.append('image', image.src)
+    const accessToken = localStorage.getItem('token')
+
+    fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('image ajoutée', data)
+            const gallery = document.getElementById('galleryContainer')
+            const figure = document.createElement('figure')
+            const img = document.createElement('img')
+            const figcaption = document.createElement('figcaption')
+            img.src = data.imageUrl
+            figcaption.textContent = data.title
+            figure.appendChild(img)
+            figure.appendChild(figcaption)
+            gallery.appendChild(figure)
+        })
+        .catch(error => {
+            console.error('une erreur est survenue', error)
+            const form = document.querySelector('.form');
+            form.addEventListener('submit', submitNewWork);
+        })
+}
+
+const form = document.querySelector('form')
+form.addEventListener('submit', submitNewWork)

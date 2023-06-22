@@ -639,3 +639,7 @@ form i {
 	max-width: 100%;
 	max-height: 420px;
 }
+
+.submit-button-active {
+	background-color: #1D6154;
+}
