@@ -114,6 +114,7 @@ const openModal = () => {
     modal.showModal()
 }
 
+
 showModal.forEach((button) => {
     button.addEventListener('click', openModal)
 })
@@ -173,7 +174,8 @@ fetch('http://localhost:5678/api/works')
             figure.appendChild(figcaption)
             figure.appendChild(deleteSpan)
             galleryModal.appendChild(figure)
-            deleteIcon.addEventListener('click', () => {
+            deleteIcon.addEventListener('click', (event) => {
+                event.preventDefault()
                 deleteWork(work.id)
             })
         });
@@ -195,7 +197,6 @@ function deleteWork(id) {
         .then(response => {
             if (response.ok) {
                 console.log('work deleted')
-                removeWorkOnModal(id) //to delete work from the modal
                 removeWorkOnGallery(id) //to delete work on the gallery
             }
             else {
@@ -205,13 +206,7 @@ function deleteWork(id) {
         .catch(error => {
             console.error('une erreur est survenue', error)
         })
-}
 
-function removeWorkOnModal(workId) {
-    const figure = document.querySelector(`.gallery-modal figure[data-work-id="${workId}"]`)
-    if (figure) {
-        figure.remove()
-    }
 }
 
 function removeWorkOnGallery(workId) {
