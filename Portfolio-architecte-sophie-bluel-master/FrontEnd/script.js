@@ -197,7 +197,6 @@ function deleteWork(id) {
                 console.log('work deleted')
                 removeWorkOnModal(id) //to delete work from the modal
                 removeWorkOnGallery(id) //to delete work on the gallery
-
             }
             else {
                 console.error('deletion failed')
@@ -221,6 +220,7 @@ function removeWorkOnGallery(workId) {
         figure.remove()
     }
 }
+
 
 // Add a new work
 
@@ -278,6 +278,11 @@ function triggerFileSelect() {
     fileInput.addEventListener('change', (event) => {
         const photo = event.target.files[0]
 
+        if (photo && photo.size > 4 * 1024 * 1024) {
+            alert('la taille maximale est de 4 mo')
+            return
+        }
+
         if (photo) {
             selectedImage = photo
             const reader = new FileReader();
@@ -294,6 +299,7 @@ function triggerFileSelect() {
                     const scaleFactor = maxHeight / previewImage.height;
                     const width = previewImage.width * scaleFactor;
                     const height = previewImage.height * scaleFactor;
+
 
                     //apply the new dimensions to the image
                     previewImage.width = width;
@@ -367,7 +373,6 @@ function createWork() {
     const image = selectedImage //photo recovery
     const title = titleInput.value.trim() //title recovery
     const category = parseInt(categoryInput.value.trim())//category id recovery
-
 
     const formData = new FormData() // create a formdata to send data
     formData.append('image', image) //photo added to formdata

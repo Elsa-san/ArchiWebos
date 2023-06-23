@@ -643,3 +643,7 @@ form i {
 .submit-button-active {
 	background-color: #1D6154;
 }
+
+label {
+	color: #3D3D3D
+}
