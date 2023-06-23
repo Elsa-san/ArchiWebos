@@ -266,7 +266,6 @@ fetchCategoriesModal()
 
 //preview of the image on the modal
 
-const uploadButton = document.getElementById('uploadButton')
 const uploadButtonLabel = document.getElementById('uploadButtonLabel')
 const photoPreview = document.getElementById('photo-preview')
 let selectedImage = null
@@ -365,15 +364,15 @@ function createWork() {
     const titleInput = document.getElementById('workTitle')
     const categoryInput = document.getElementById('workCategory')
 
-    const photo = selectedImage //photo recovery
+    const image = selectedImage //photo recovery
     const title = titleInput.value.trim() //title recovery
-    const categoryId = categoryInput.value.trim()//category id recovery
+    const category = parseInt(categoryInput.value.trim())//category id recovery
 
 
     const formData = new FormData() // create a formdata to send data
-    formData.append('photo', photo) //photo added to formdata
+    formData.append('image', image) //photo added to formdata
     formData.append('title', title) //title added to formdata
-    formData.append('categoryId', categoryId) //category added to formdata
+    formData.append('category', category) //category added to formdata
 
     const accessToken = localStorage.getItem('token')
 
@@ -394,9 +393,14 @@ function createWork() {
         .catch(error => {
             console.error('Une erreur est survenue', error)
         })
+
 }
 
-submitButtonModal.addEventListener('click', createWork)
+submitButtonModal.addEventListener('click', (event) => {
+    event.preventDefault();
+    createWork();
+});
+
 
 // answer of the API to show dynamically the new image on the gallery
 function addWorkToGallery(work) {
