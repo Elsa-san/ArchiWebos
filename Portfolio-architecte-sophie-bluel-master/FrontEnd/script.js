@@ -2,6 +2,7 @@
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(works => {
+        const galleryModal = document.querySelector('.gallery-modal')
 
         works.forEach(work => {
             const gallery = document.getElementsByClassName('gallery')[0]
@@ -12,6 +13,26 @@ fetch('http://localhost:5678/api/works')
             gallery.appendChild(figure)
             figure.appendChild(image)
             figure.appendChild(figcaption)
+
+            const modalFigure = document.createElement('figure')
+            modalFigure.setAttribute('data-work-id', work.id)
+            const modalImage = document.createElement('img')
+            modalImage.src = work.imageUrl
+            const modalFigcaption = document.createElement('figcaption')
+            modalFigcaption.innerHTML = 'éditer'
+            const deleteSpan = document.createElement('span');
+            deleteSpan.classList.add('delete-icon');
+            const deleteIcon = document.createElement('i')
+            deleteIcon.classList.add('fa-solid', 'fa-trash-can')
+            deleteSpan.appendChild(deleteIcon)
+            modalFigure.appendChild(modalImage)
+            modalFigure.appendChild(modalFigcaption)
+            modalFigure.appendChild(deleteSpan)
+            galleryModal.appendChild(modalFigure)
+            deleteIcon.addEventListener('click', (event) => {
+                event.preventDefault()
+                deleteWork(work.id)
+            })
         });
 
     });
@@ -110,13 +131,10 @@ const modal = document.getElementById('modal')
 const workModal = document.getElementById('workModal');
 const showModal = document.querySelectorAll('.show-modal')
 
-const openModal = () => {
-    modal.showModal()
-}
-
-
 showModal.forEach((button) => {
-    button.addEventListener('click', openModal)
+    button.addEventListener('click', () => {
+        modal.showModal()
+    })
 })
 
 //to close the modal 
@@ -153,35 +171,6 @@ backToModalButton.addEventListener('click', function () {
     workModal.close()
 })
 
-//data recovery of the modal + icons to delete
-
-fetch('http://localhost:5678/api/works')
-    .then(response => response.json())
-    .then(works => {
-        const galleryModal = document.querySelector('.gallery-modal')
-        works.forEach(work => {
-            const figure = document.createElement('figure')
-            const image = document.createElement('img')
-            image.src = work.imageUrl
-            const figcaption = document.createElement('figcaption')
-            figcaption.innerHTML = 'éditer'
-            const deleteSpan = document.createElement('span');
-            deleteSpan.classList.add('delete-icon');
-            const deleteIcon = document.createElement('i')
-            deleteIcon.classList.add('fa-solid', 'fa-trash-can')
-            deleteSpan.appendChild(deleteIcon)
-            figure.appendChild(image)
-            figure.appendChild(figcaption)
-            figure.appendChild(deleteSpan)
-            galleryModal.appendChild(figure)
-            deleteIcon.addEventListener('click', (event) => {
-                event.preventDefault()
-                deleteWork(work.id)
-            })
-        });
-    });
-
-
 //to delete a work in the modal 
 
 function deleteWork(id) {
@@ -191,7 +180,6 @@ function deleteWork(id) {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${accessToken}`
-
         }
     })
         .then(response => {
@@ -210,7 +198,7 @@ function deleteWork(id) {
 }
 
 function removeWorkOnGallery(workId) {
-    const figure = document.querySelector(`.gallery figure[data-work-id="${workId}"]`)
+    const figure = document.querySelector(`.gallery-modal figure[data-work-id="${workId}"]`)
     if (figure) {
         figure.remove()
     }
@@ -388,7 +376,6 @@ function createWork() {
         .then(newWork => {
             console.log(newWork)
             addWorkToGallery(newWork) //add the new project to the gallery
-
         })
         .catch(error => {
             console.error('Une erreur est survenue', error)
@@ -397,9 +384,9 @@ function createWork() {
 }
 
 submitButtonModal.addEventListener('click', (event) => {
-    event.preventDefault();
-    createWork();
-});
+    event.preventDefault()
+    createWork()
+})
 
 
 // answer of the API to show dynamically the new image on the gallery
