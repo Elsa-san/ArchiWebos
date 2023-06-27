@@ -177,7 +177,6 @@ function deleteWork(id) {
     })
         .then(response => {
             if (response.ok) {
-                console.log('work deleted')
                 removeWorkOnGallery(id)
                 allWorks = allWorks.filter(work => work.id !== id) //filter without the Id removed
             }
@@ -249,69 +248,59 @@ const uploadButtonLabel = document.getElementById('uploadButtonLabel')
 const photoPreview = document.getElementById('photo-preview')
 let selectedImage = null
 
-function triggerFileSelect() {
-    const fileInput = document.getElementById('uploadButton')
-    fileInput.type = 'file'
-    fileInput.accept = 'image/jpeg, image/png'
 
-    fileInput.addEventListener('change', (event) => {
-        const photo = event.target.files[0]
+function addPhoto(event) {
+    const photo = event.target.files[0]
 
-        if (photo && photo.size > 4 * 1024 * 1024) {
-            alert('la taille maximale est de 4 mo')
-            return
-        }
+    if (photo && photo.size > 4 * 1024 * 1024) {
+        alert('la taille maximale est de 4 mo')
+        return
+    }
 
-        if (photo) {
-            selectedImage = photo
-            const reader = new FileReader();
+    if (photo) {
+        selectedImage = photo
+        const reader = new FileReader();
 
-            reader.addEventListener('load', () => {
-                const previewImage = new Image()
+        reader.addEventListener('load', () => {
+            const previewImage = new Image()
 
-                previewImage.onload = () => {
-                    const maxHeight = 169 // Photo max height
+            previewImage.onload = () => {
+                const maxHeight = 169 // Photo max height
 
-                    console.log(previewImage.height)
-
-                    //calcul to resize the image
-                    const scaleFactor = maxHeight / previewImage.height;
-                    const width = previewImage.width * scaleFactor;
-                    const height = previewImage.height * scaleFactor;
+                //calcul to resize the image
+                const scaleFactor = maxHeight / previewImage.height;
+                const width = previewImage.width * scaleFactor;
+                const height = previewImage.height * scaleFactor;
 
 
-                    //apply the new dimensions to the image
-                    previewImage.width = width;
-                    previewImage.height = height;
+                //apply the new dimensions to the image
+                previewImage.width = width;
+                previewImage.height = height;
 
-                    //erase preview content + add the new image
-                    photoPreview.innerHTML = ''
-                    photoPreview.appendChild(previewImage)
-                }
-                //define the src of image
-                previewImage.src = reader.result
-            })
+                //erase preview content + add the new image
+                photoPreview.appendChild(previewImage)
+            }
+            //define the src of image
+            previewImage.src = reader.result
+        })
 
-            //read the image as data URL
-            reader.readAsDataURL(photo)
-            uploadButton.style.display = 'none';
+        //read the image as data URL
+        reader.readAsDataURL(photo)
+        uploadButton.style.display = 'none';
 
 
-            // Hide the other elements on modal
-            const elementsHidden = document.querySelectorAll('.modal p, .modal i.fa-image');
-            elementsHidden.forEach((element) => {
-                element.style.display = 'none';
-            });
-            uploadButtonLabel.style.display = 'none';
+        // Hide the other elements on modal
+        const elementsHidden = document.querySelectorAll('.modal p, .modal i.fa-image');
+        elementsHidden.forEach((element) => {
+            element.style.display = 'none';
+        });
+        uploadButtonLabel.style.display = 'none';
 
-        }
-    });
-
-    //triger the click on the button of file selection
-    fileInput.click()
+    }
 }
 
-uploadButton.addEventListener('click', triggerFileSelect)
+const fileInput = document.getElementById('uploadButton')
+fileInput.addEventListener('change', (event) => addPhoto(event));
 
 //conditions check to submit
 
@@ -326,12 +315,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const titleValue = titleInput.value.trim()
         const categoryValue = categoryInput.value.trim()
 
-        if (photoValue !== '' && titleValue !== '' && categoryValue !== "") {
+        if ((photoValue !== '' || selectedImage !== null) && titleValue !== '' && categoryValue !== "") {
             submitButtonModal.classList.add('submit-button-active')
             submitButtonModal.removeAttribute('disabled') //submit button enable to click
         } else {
             submitButtonModal.classList.remove('submit-button-active')
             submitButtonModal.setAttribute('disabled', 'disabled') // submit button disabled
+
         }
     }
 
@@ -358,6 +348,7 @@ function createWork() {
     formData.append('title', title) //title added to formdata
     formData.append('category', category) //category added to formdata
 
+
     const accessToken = localStorage.getItem('token')
 
     //send the request POST
@@ -370,7 +361,6 @@ function createWork() {
     })
         .then(response => response.json())
         .then(newWork => {
-            console.log(newWork)
             addWorkToGallery(newWork) //add the new project to the gallery
             addWorkToModal(newWork)
             allWorks.push(newWork)
@@ -386,6 +376,17 @@ submitButtonModal.addEventListener('click', (event) => {
     event.preventDefault()
     createWork()
     closeModal()
+    form.reset()
+    document.getElementById('uploadButton').value = null
+    document.getElementById('photo-preview').removeChild(document.querySelector('#photo-preview img'))
+    const elementsHidden = document.querySelectorAll('.modal p, .modal i.fa-image');
+    elementsHidden.forEach((element) => {
+        element.style.display = '';
+    });
+    uploadButtonLabel.style.display = '';
+
+
+
 })
 
 
