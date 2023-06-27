@@ -3,13 +3,15 @@ fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(works => {
         const galleryModal = document.querySelector('.gallery-modal')
-
+        allWorks = works;
         works.forEach(work => {
             const gallery = document.getElementsByClassName('gallery')[0]
             const figure = document.createElement('figure')
+            figure.setAttribute('data-work-id', work.id)
             const image = document.createElement('img')
             image.src = work.imageUrl;
             const figcaption = document.createElement('figcaption')
+            figcaption.textContent = work.title
             gallery.appendChild(figure)
             figure.appendChild(image)
             figure.appendChild(figcaption)
@@ -39,10 +41,11 @@ fetch('http://localhost:5678/api/works')
 
 function updateGallery(works) {
     const gallery = document.getElementsByClassName('gallery')[0]
-    gallery.innerHTML = ""   // remove the gallery content
+    gallery.innerHTML = ''   // remove the gallery content
 
     works.forEach(work => {
         const figure = document.createElement('figure')
+        figure.setAttribute('data-work-id', work.id)
         const image = document.createElement('img')
         const figcaption = document.createElement('figcaption')
         image.src = work.imageUrl;
@@ -57,7 +60,6 @@ const filtersAll = document.getElementById('filters-all')
 const filtersObjects = document.getElementById('filters-objects')
 const filtersAppartments = document.getElementById('filters-appartments')
 const filtersHotels = document.getElementById('filters-hotels')
-let allWorks = []
 let categories = []
 
 function fetchCategories() {
@@ -68,35 +70,26 @@ function fetchCategories() {
         })
 }
 
-function fetchWorks() {
-    const apiURL = 'http://localhost:5678/api/works';
-    fetch(apiURL)
-        .then(response => response.json())
-        .then(works => {
-            allWorks = works;
-            updateGallery(allWorks);
-        });
-
-}
-
 function filterAllClick() {
     updateGallery(allWorks)
 }
 
 function filterObjectsClick() {
-    const filtered = allWorks.filter(work => work.categoryId === categories.find(category => category.name === 'Objets').id)
+    const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-objects').getAttribute("data-category-id")
+    )
     updateGallery(filtered)
-
 }
 
 function filterAppartmentsClick() {
-    const filtered = allWorks.filter(work => work.categoryId === categories.find(category => category.name === 'Appartements').id)
+    const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-appartments').getAttribute("data-category-id")
+    )
     updateGallery(filtered)
 
 }
 
 function filterHotelsClick() {
-    const filtered = allWorks.filter(work => work.categoryId === categories.find(category => category.name === 'Hotels & restaurants').id)
+    const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-hotels').getAttribute("data-category-id")
+    )
     updateGallery(filtered)
 
 }
@@ -104,7 +97,6 @@ function filterHotelsClick() {
 fetchCategories('http://localhost:5678/api/categories')
     .then(categoriesData => {
         categories = categoriesData;
-        fetchWorks();
     });
 
 filtersAll.addEventListener('click', filterAllClick)
@@ -112,7 +104,6 @@ filtersObjects.addEventListener('click', filterObjectsClick)
 filtersAppartments.addEventListener('click', filterAppartmentsClick)
 filtersHotels.addEventListener('click', filterHotelsClick)
 
-fetchWorks()
 
 const loginText = document.getElementById('login-text')
 
@@ -130,6 +121,8 @@ if (userAuthenticated) {
 const modal = document.getElementById('modal')
 const workModal = document.getElementById('workModal');
 const showModal = document.querySelectorAll('.show-modal')
+const galleryModal = document.querySelector('.gallery-modal')
+
 
 showModal.forEach((button) => {
     button.addEventListener('click', () => {
@@ -171,7 +164,7 @@ backToModalButton.addEventListener('click', function () {
     workModal.close()
 })
 
-//to delete a work in the modal 
+//Function to delete a work
 
 function deleteWork(id) {
     const accessToken = localStorage.getItem('token')
@@ -185,7 +178,8 @@ function deleteWork(id) {
         .then(response => {
             if (response.ok) {
                 console.log('work deleted')
-                removeWorkOnGallery(id) //to delete work on the gallery
+                removeWorkOnGallery(id)
+                allWorks = allWorks.filter(work => work.id !== id) //filter without the Id removed
             }
             else {
                 console.error('deletion failed')
@@ -198,22 +192,24 @@ function deleteWork(id) {
 }
 
 function removeWorkOnGallery(workId) {
-    const figure = document.querySelector(`.gallery-modal figure[data-work-id="${workId}"]`)
-    if (figure) {
-        figure.remove()
+    const figures = document.querySelectorAll(`figure[data-work-id="${workId}"]`)
+    if (figures) {
+        figures.forEach(figure => {
+            figure.remove()
+        })
     }
 }
 
 
-// Add a new work
+// Function to add a new work
 
-const addWorkButton = document.getElementById('addWorkButton');
-addWorkButton.addEventListener('click', openWorkModal);
+const addWorkButton = document.getElementById('addWorkButton')
+addWorkButton.addEventListener('click', openWorkModal)
 
 function openWorkModal() {
-    const modal = document.querySelector('.workModal');
+    const modal = document.querySelector('.workModal')
     if (modal) {
-        modal.showModal();
+        modal.showModal()
     }
 }
 
@@ -376,6 +372,8 @@ function createWork() {
         .then(newWork => {
             console.log(newWork)
             addWorkToGallery(newWork) //add the new project to the gallery
+            addWorkToModal(newWork)
+            allWorks.push(newWork)
         })
         .catch(error => {
             console.error('Une erreur est survenue', error)
@@ -383,11 +381,11 @@ function createWork() {
 
 }
 
+
 submitButtonModal.addEventListener('click', (event) => {
     event.preventDefault()
     createWork()
     closeModal()
-
 })
 
 
@@ -395,6 +393,7 @@ submitButtonModal.addEventListener('click', (event) => {
 function addWorkToGallery(work) {
     const gallery = document.getElementById('galleryContainer')
     const figure = document.createElement('figure')
+    figure.setAttribute('data-work-id', work.id)
     const image = document.createElement('img')
     const figcaption = document.createElement('figcaption')
 
@@ -411,5 +410,30 @@ function addWorkToGallery(work) {
         console.error('loading image error')
     })
 
+}
+// To delete a work in the modal
+
+function addWorkToModal(work) {
+    const galleryModal = document.querySelector('.gallery-modal')
+
+    const modalFigure = document.createElement('figure')
+    modalFigure.setAttribute('data-work-id', work.id)
+    const modalImage = document.createElement('img')
+    modalImage.src = work.imageUrl
+    const modalFigcaption = document.createElement('figcaption')
+    modalFigcaption.innerHTML = 'éditer'
+    const deleteSpan = document.createElement('span')
+    deleteSpan.classList.add('delete-icon');
+    const deleteIcon = document.createElement('i')
+    deleteIcon.classList.add('fa-solid', 'fa-trash-can')
+    deleteSpan.appendChild(deleteIcon)
+    modalFigure.appendChild(modalImage)
+    modalFigure.appendChild(modalFigcaption)
+    modalFigure.appendChild(deleteSpan)
+    galleryModal.appendChild(modalFigure)
+    deleteIcon.addEventListener('click', (event) => {
+        event.preventDefault()
+        deleteWork(work.id)
+    })
 
 }
