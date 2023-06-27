@@ -30,7 +30,6 @@ fetch('http://localhost:5678/api/works')
             modalFigure.appendChild(deleteSpan)
             galleryModal.appendChild(modalFigure)
             deleteIcon.addEventListener('click', (event) => {
-                event.stopPropagation()
                 event.preventDefault()
                 deleteWork(work.id)
             })
@@ -384,8 +383,11 @@ function createWork() {
 
 }
 
-submitButtonModal.addEventListener('click', () => {
+submitButtonModal.addEventListener('click', (event) => {
+    event.preventDefault()
     createWork()
+    closeModal()
+
 })
 
 
