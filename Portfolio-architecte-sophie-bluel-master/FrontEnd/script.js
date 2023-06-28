@@ -300,36 +300,28 @@ function addPhoto(event) {
 }
 
 const fileInput = document.getElementById('uploadButton')
-fileInput.addEventListener('change', (event) => addPhoto(event));
+fileInput.addEventListener('change', (event) => addPhoto(event))
 
 //conditions check to submit
 
 document.addEventListener('DOMContentLoaded', function () {
     const photoInput = document.getElementById('uploadButton')
     const titleInput = document.getElementById('workTitle')
-    const categoryInput = document.getElementById('workCategory')
     const submitButtonModal = document.getElementById('submitButtonModal')
 
-    function checkFields() {
-        const photoValue = photoInput.value.trim()
-        const titleValue = titleInput.value.trim()
-        const categoryValue = categoryInput.value.trim()
+    submitButtonModal.disabled = true;
 
-        if ((photoValue !== '' || selectedImage !== null) && titleValue !== '' && categoryValue !== "") {
+    titleInput.addEventListener('keyup', () => {
+        if (titleInput.value.trim().length > 0 && photoInput.files.length > 0) {
+            submitButtonModal.disabled = false
             submitButtonModal.classList.add('submit-button-active')
-            submitButtonModal.removeAttribute('disabled') //submit button enable to click
+
         } else {
-            submitButtonModal.classList.remove('submit-button-active')
-            submitButtonModal.setAttribute('disabled', 'disabled') // submit button disabled
-
+            submitButtonModal.disabled = true
         }
-    }
+    });
+});
 
-    photoInput.addEventListener('input', checkFields)
-    titleInput.addEventListener('input', checkFields)
-    categoryInput.addEventListener('change', checkFields)
-
-})
 
 // send the new work to the gallery 
 const submitButtonModal = document.getElementById('submitButtonModal')
