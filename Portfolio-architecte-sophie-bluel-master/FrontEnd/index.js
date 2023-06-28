@@ -303,7 +303,7 @@ fileInput.addEventListener('change', (event) => addPhoto(event))
 
 //conditions check to submit a new work
 
-document.addEventListener('DOMContentLoaded', function () {
+function setupFormValidation() {
     const photoInput = document.getElementById('uploadButton')
     const titleInput = document.getElementById('workTitle')
     const submitButtonModal = document.getElementById('submitButtonModal')
@@ -314,12 +314,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (titleInput.value.trim().length > 0 && photoInput.files.length > 0) {
             submitButtonModal.disabled = false
             submitButtonModal.classList.add('submit-button-active')
-
         } else {
-            submitButtonModal.disabled = true
+            submitButtonModal.disabled = true;
         }
     });
-});
+}
+
+document.addEventListener('DOMContentLoaded', setupFormValidation);
 
 
 //send a new project to the back-end by the modal form
@@ -365,6 +366,8 @@ submitButtonModal.addEventListener('click', (event) => {
     createWork()
     closeModal()
     form.reset()
+    setupFormValidation()
+    submitButtonModal.classList.remove('submit-button-active')
     document.getElementById('uploadButton').value = null
     document.getElementById('photo-preview').removeChild(document.querySelector('#photo-preview img'))
     const elementsHidden = document.querySelectorAll('.modal p, .modal i.fa-image')
@@ -372,9 +375,6 @@ submitButtonModal.addEventListener('click', (event) => {
         element.style.display = ''
     });
     uploadButtonLabel.style.display = ''
-
-
-
 })
 
 
