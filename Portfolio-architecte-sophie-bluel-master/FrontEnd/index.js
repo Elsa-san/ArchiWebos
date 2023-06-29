@@ -3,42 +3,56 @@
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(works => {
-        const galleryModal = document.querySelector('.gallery-modal')
         allWorks = works;
+        // Create HTML elements for each work
         works.forEach(work => {
-            const gallery = document.getElementsByClassName('gallery')[0]
-            const figure = document.createElement('figure')
-            figure.setAttribute('data-work-id', work.id)
-            const image = document.createElement('img')
-            image.src = work.imageUrl;
-            const figcaption = document.createElement('figcaption')
-            figcaption.textContent = work.title
-            gallery.appendChild(figure)
-            figure.appendChild(image)
-            figure.appendChild(figcaption)
-
-            const modalFigure = document.createElement('figure')
-            modalFigure.setAttribute('data-work-id', work.id)
-            const modalImage = document.createElement('img')
-            modalImage.src = work.imageUrl
-            const modalFigcaption = document.createElement('figcaption')
-            modalFigcaption.innerHTML = 'éditer'
-            const deleteSpan = document.createElement('span');
-            deleteSpan.classList.add('delete-icon');
-            const deleteIcon = document.createElement('i')
-            deleteIcon.classList.add('fa-solid', 'fa-trash-can')
-            deleteSpan.appendChild(deleteIcon)
-            modalFigure.appendChild(modalImage)
-            modalFigure.appendChild(modalFigcaption)
-            modalFigure.appendChild(deleteSpan)
-            galleryModal.appendChild(modalFigure)
-            deleteIcon.addEventListener('click', (event) => {
-                event.preventDefault()
-                deleteWork(work.id)
-            })
+            addWorkToGallery(work)
+            addWorkToModal(work)
         });
 
     });
+
+function addWorkToGallery(work) {
+    const gallery = document.getElementById('galleryContainer')
+    const figure = document.createElement('figure')
+    figure.setAttribute('data-work-id', work.id)
+    const image = document.createElement('img')
+    const figcaption = document.createElement('figcaption')
+
+    figure.appendChild(image)
+    figure.appendChild(figcaption)
+    gallery.appendChild(figure)
+
+    image.src = work.imageUrl
+    figcaption.textContent = work.title
+
+
+}
+
+function addWorkToModal(work) {
+    const galleryModal = document.querySelector('.gallery-modal')
+
+    const modalFigure = document.createElement('figure')
+    modalFigure.setAttribute('data-work-id', work.id)
+    const modalImage = document.createElement('img')
+    modalImage.src = work.imageUrl
+    const modalFigcaption = document.createElement('figcaption')
+    modalFigcaption.innerHTML = 'éditer'
+    const deleteSpan = document.createElement('span')
+    deleteSpan.classList.add('delete-icon');
+    const deleteIcon = document.createElement('i')
+    deleteIcon.classList.add('fa-solid', 'fa-trash-can')
+    deleteSpan.appendChild(deleteIcon)
+    modalFigure.appendChild(modalImage)
+    modalFigure.appendChild(modalFigcaption)
+    modalFigure.appendChild(deleteSpan)
+    galleryModal.appendChild(modalFigure)
+    deleteIcon.addEventListener('click', (event) => {
+        event.preventDefault()
+        deleteWork(work.id)
+    })
+}
+
 
 function updateGallery(works) {
     const gallery = document.getElementsByClassName('gallery')[0]
@@ -378,51 +392,4 @@ submitButtonModal.addEventListener('click', (event) => {
 })
 
 
-// answer of the API to show dynamically the new image on the gallery
-function addWorkToGallery(work) {
-    const gallery = document.getElementById('galleryContainer')
-    const figure = document.createElement('figure')
-    figure.setAttribute('data-work-id', work.id)
-    const image = document.createElement('img')
-    const figcaption = document.createElement('figcaption')
 
-    image.addEventListener('load', () => {
-        figure.appendChild(image)
-        figure.appendChild(figcaption)
-        gallery.appendChild(figure)
-    })
-
-    image.src = work.imageUrl
-    figcaption.textContent = work.title
-
-    image.addEventListener('error', () => {
-        console.error('loading image error')
-    })
-
-}
-// To delete a work in the modal
-
-function addWorkToModal(work) {
-    const galleryModal = document.querySelector('.gallery-modal')
-
-    const modalFigure = document.createElement('figure')
-    modalFigure.setAttribute('data-work-id', work.id)
-    const modalImage = document.createElement('img')
-    modalImage.src = work.imageUrl
-    const modalFigcaption = document.createElement('figcaption')
-    modalFigcaption.innerHTML = 'éditer'
-    const deleteSpan = document.createElement('span')
-    deleteSpan.classList.add('delete-icon');
-    const deleteIcon = document.createElement('i')
-    deleteIcon.classList.add('fa-solid', 'fa-trash-can')
-    deleteSpan.appendChild(deleteIcon)
-    modalFigure.appendChild(modalImage)
-    modalFigure.appendChild(modalFigcaption)
-    modalFigure.appendChild(deleteSpan)
-    galleryModal.appendChild(modalFigure)
-    deleteIcon.addEventListener('click', (event) => {
-        event.preventDefault()
-        deleteWork(work.id)
-    })
-
-}
