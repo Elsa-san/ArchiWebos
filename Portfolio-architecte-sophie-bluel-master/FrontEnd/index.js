@@ -72,48 +72,84 @@ function updateGallery(works) {
 }
 
 //filters 
-const filtersAll = document.getElementById('filters-all')
-const filtersObjects = document.getElementById('filters-objects')
-const filtersAppartments = document.getElementById('filters-appartments')
-const filtersHotels = document.getElementById('filters-hotels')
-let categories = []
+fetch("http://localhost:5678/api/categories")
+    .then(response => response.json())
+    .then(categories => {
+        addCategoriesToFilters(categories);
+        const filterAllClick = document.createElement('button') // create the button element
+        filterAllClick.textContent = 'Tous'
+        filterAllClick.id = 'filterAllClick'
+        filterAllClick.addEventListener('click', filterAll)
+        filterContainer.prepend(filterAllClick) // puts the "All" button at the beginning of the container
+    })
+    .catch(error => {
+        console.log('une erreur est survenue', error)
+    });
 
-function fetchCategories() {
-    return fetch("http://localhost:5678/api/categories")
-        .then(response => response.json())
-        .then(categoriesData => {
-            return categoriesData;
-        })
+function addCategoriesToFilters(categories) {
+    const filterContainer = document.getElementById('filterContainer')
+
+    categories.forEach(category => {
+        const filterButton = document.createElement('button')
+        filterButton.textContent = category.name // Sets button text as category name
+        filterButton.setAttribute('data-category-id', category.id) // Defines a 'data-category-id' attribute to store the category ID
+        filterButton.addEventListener('click', () => {
+            filterByCategory(category.id)
+        });
+
+        filterContainer.appendChild(filterButton) // Adds filter button to container
+    });
 }
 
-function filterAllClick() {
-    updateGallery(allWorks)
+function filterByCategory(categoryId) {
+    const filtered = allWorks.filter(work => work.categoryId == categoryId);
+    updateGallery(filtered) //update the gallery with filtered projects
 }
 
-function filterObjectsClick() {
-    const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-objects').getAttribute("data-category-id")
-    )
-    updateGallery(filtered)
+function filterAll() {
+    updateGallery(allWorks) //update the gallery with all projects
 }
 
-function filterAppartmentsClick() {
-    const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-appartments').getAttribute("data-category-id")
-    )
-    updateGallery(filtered)
 
-}
+// const filtersAll = document.getElementById('filters-all')
+// const filtersObjects = document.getElementById('filters-objects')
+// const filtersAppartments = document.getElementById('filters-appartments')
+// const filtersHotels = document.getElementById('filters-hotels')
+// let categories = []
 
-function filterHotelsClick() {
-    const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-hotels').getAttribute("data-category-id")
-    )
-    updateGallery(filtered)
+// function fetchCategories() {
+//     return fetch("http://localhost:5678/api/categories")
+//         .then(response => response.json())
+//         .then(categoriesData => {
+//             return categoriesData;
+//         })
+// }
 
-}
 
-filtersAll.addEventListener('click', filterAllClick)
-filtersObjects.addEventListener('click', filterObjectsClick)
-filtersAppartments.addEventListener('click', filterAppartmentsClick)
-filtersHotels.addEventListener('click', filterHotelsClick)
+// function filterObjectsClick() {
+//     const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-objects').getAttribute("data-category-id")
+//     )
+//     updateGallery(filtered)
+// }
+
+// function filterAppartmentsClick() {
+//     const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-appartments').getAttribute("data-category-id")
+//     )
+//     updateGallery(filtered)
+
+// }
+
+// function filterHotelsClick() {
+//     const filtered = allWorks.filter(work => work.categoryId == document.getElementById('filters-hotels').getAttribute("data-category-id")
+//     )
+//     updateGallery(filtered)
+
+// }
+
+// filtersAll.addEventListener('click', filterAllClick)
+// filtersObjects.addEventListener('click', filterObjectsClick)
+// filtersAppartments.addEventListener('click', filterAppartmentsClick)
+// filtersHotels.addEventListener('click', filterHotelsClick)
 
 //login
 const loginText = document.getElementById('login-text')
